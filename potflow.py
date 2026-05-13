@@ -135,9 +135,3 @@ def potflow(params = None, xbounds = [-5, 5], ybounds= [-5, 5], levels=40, visua
     
 
     return fig, ax, psival, uv[0], uv[1]
-
-fig, ax, _, _, _ = potflow([["ufl", [0], 10], ['dbl', [0,0], 10],['vor', [0,1], 10]], levels = 50, visualize=True)
-fig.canvas.draw()
-plt.pause(0.1) 
-input("Press Enter to close...")
-plt.show()
