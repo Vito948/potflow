@@ -107,13 +107,13 @@ def potflow(params = None, xbounds = [-5, 5], ybounds= [-5, 5], levels=40, visua
         psival = psival + psi(X,Y,str(typeval), coordval, strengthval)
         uv = uv+vel(X,Y,str(typeval), coordval, strengthval)
         if typeval != "ufl": 
-            print('noted')
             points.append([coordval[0], coordval[1]])
 
     points = np.array(points)
     vmag = np.linalg.norm(uv, axis=0)
-    print(np.max(vmag))
-
+    #clips extreme values in case it calculated singularities
+    vmag = np.clip(vmag, np.percentile(vmag, 1), np.percentile(vmag, 99)) 
+    psival = np.clip(psival, np.percentile(psival, 1), np.percentile(psival, 99)) 
 
     #creates the figure containing the flow visualization
     plt.ion()
@@ -136,3 +136,8 @@ def potflow(params = None, xbounds = [-5, 5], ybounds= [-5, 5], levels=40, visua
 
     return fig, ax, psival, uv[0], uv[1]
 
+fig, ax, _, _, _ = potflow([["ufl", [0], 10], ['dbl', [0,0], 10],['vor', [0,1], 10]], levels = 50, visualize=True)
+fig.canvas.draw()
+plt.pause(0.1) 
+input("Press Enter to close...")
+plt.show()
